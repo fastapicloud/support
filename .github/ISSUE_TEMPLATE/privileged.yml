@@ -1,0 +1,22 @@
+name: Privileged
+description: You are part of the @fastapicloud team. If not, check the other options. 👇
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your interest in FastAPI Cloud! 🚀
+
+        If you are not part of the @fastapicloud team, please start the conversation in a [Question in GitHub Discussions](https://github.com/fastapicloud/support/discussions/categories/questions) instead.
+  - type: checkboxes
+    id: privileged
+    attributes:
+      label: Privileged issue
+      description: Confirm that you are allowed to create an issue here.
+      options:
+        - label: I'm part of the @fastapicloud team.
+          required: true
+  - type: textarea
+    id: content
+    attributes:
+      label: Issue Content
+      description: Add the content of the issue here.

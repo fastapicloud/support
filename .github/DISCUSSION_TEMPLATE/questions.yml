@@ -1,0 +1,145 @@
+labels: [question]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your interest in FastAPI Cloud! 🚀
+
+        Please follow these instructions, fill every question, and do every step. 🙏
+
+        By asking questions in a structured way (following this) it will be much easier to help you.
+
+        And there's a high chance that you will find the solution along the way and you won't even have to submit it and wait for an answer. 😎
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: First Check
+      description: Please confirm and check all the following options.
+      options:
+        - label: I added a very descriptive title here.
+          required: true
+        - label: I used the GitHub search to find a similar question and didn't find it.
+          required: true
+        - label: I searched the FastAPI Cloud documentation, with the integrated search.
+          required: true
+        - label: I already searched in Google "How to X in FastAPI Cloud" and didn't find any information.
+          required: true
+        - label: I already read and followed all the tutorial in the docs and didn't find an answer.
+          required: true
+        - label: I already checked if it is not related to FastAPI Cloud but to [FastAPI](https://github.com/fastapi/fastapi).
+          required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Example Code
+      description: |
+        Please add a self-contained, [minimal, reproducible, example](https://stackoverflow.com/help/minimal-reproducible-example) with your use case.
+
+        If we can copy it, run it, and see it right away, there's a much higher chance we'll be able to help you.
+
+      placeholder: |
+        from fastapi import FastAPI
+
+        app = FastAPI()
+
+
+        @app.get("/")
+        def read_root():
+            return {"message": "Hello World"}
+      render: python
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: |
+        What is the problem, question, or error?
+
+        Write a short description telling us what you are doing, what you expect to happen, and what is currently happening.
+      placeholder: |
+        * Deploy this app with `fastapi deploy`
+        * Open the browser and call the endpoint `/`.
+        * It returns a JSON with `{"message": "Hello World"}`.
+        * But I expected it to return `{"message": "Hello Cloud"}`.
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: What operating system are you on?
+      multiple: true
+      options:
+        - Linux
+        - Windows
+        - macOS
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: os-details
+    attributes:
+      label: Operating System Details
+      description: You can add more details about your operating system here, in particular if you chose "Other".
+  - type: input
+    id: fastapi-version
+    attributes:
+      label: FastAPI Version
+      description: |
+        What FastAPI version are you using?
+
+        You can find the FastAPI version with:
+
+        ```bash
+        python -c "import fastapi; print(fastapi.__version__)"
+        ```
+    validations:
+      required: true
+  - type: input
+    id: pydantic-version
+    attributes:
+      label: Pydantic Version
+      description: |
+        What Pydantic version are you using?
+
+        You can find the Pydantic version with:
+
+        ```bash
+        python -c "import pydantic; print(pydantic.version.VERSION)"
+        ```
+    validations:
+      required: true
+  - type: input
+    id: fastapi-cli-version
+    attributes:
+      label: FastAPI CLI Version
+      description: |
+        What FastAPI CLI version are you using?
+        You can find the FastAPI CLI version with:
+
+        ```bash
+        fastapi --version
+        ```
+    validations:
+      required: true
+  - type: input
+    id: python-version
+    attributes:
+      label: Python Version
+      description: |
+        What Python version are you using?
+
+        You can find the Python version with:
+
+        ```bash
+        python --version
+        ```
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Add any additional context information or screenshots you think are useful.
