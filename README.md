@@ -16,6 +16,6 @@ Learn more at [https://fastapicloud.com](https://fastapicloud.com).
 
 This is the GitHub repository to handle community support for FastAPI Cloud.
 
-Do you have question, problem, feedback, need help?
+Do you have a question, problem, feedback, need help?
 
 Please create a new [GitHub Discussion](https://github.com/fastapicloud/support/discussions/new?category=questions).
