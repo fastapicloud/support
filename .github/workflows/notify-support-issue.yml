@@ -5,15 +5,16 @@ on:
     types: [opened]
   discussion:
     types: [created]
+  workflow_dispatch:
 
 jobs:
   notify:
-    runs-on: depot-ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Get GIF
         id: gif
         run: |
-          # Randomly pick one of the two iconic GIFs
+          # Randomly pick one of the two funny GIFs
           if [ $((RANDOM % 2)) -eq 0 ]; then
             # "It's happening" - The Office
             GIF_URL=$(curl -s "https://api.giphy.com/v1/gifs/search?api_key=${{ secrets.GIPHY_API_KEY }}&q=its+happening+the+office&limit=1" | jq -r '.data[0].images.fixed_height.url')
