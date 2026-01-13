@@ -1,0 +1,57 @@
+name: Notify Support Issue or Discussion Created
+
+on:
+  issues:
+    types: [opened]
+  discussion:
+    types: [created]
+
+jobs:
+  notify:
+    runs-on: depot-ubuntu-22.04
+    steps:
+      - name: Get GIF
+        id: gif
+        run: |
+          # Randomly pick one of the two iconic GIFs
+          if [ $((RANDOM % 2)) -eq 0 ]; then
+            # "It's happening" - The Office
+            GIF_URL=$(curl -s "https://api.giphy.com/v1/gifs/search?api_key=${{ secrets.GIPHY_API_KEY }}&q=its+happening+the+office&limit=1" | jq -r '.data[0].images.fixed_height.url')
+          else
+            # "This is fine" - dog in fire
+            GIF_URL=$(curl -s "https://api.giphy.com/v1/gifs/search?api_key=${{ secrets.GIPHY_API_KEY }}&q=this+is+fine&limit=1" | jq -r '.data[0].images.fixed_height.url')
+          fi
+          echo "url=$GIF_URL" >> $GITHUB_OUTPUT
+
+      - name: Notify Slack
+        run: |
+          if [ "${{ github.event_name }}" == "issues" ]; then
+            TITLE="${{ github.event.issue.title }}"
+            URL="${{ github.event.issue.html_url }}"
+            AUTHOR="${{ github.event.issue.user.login }}"
+            TYPE="Issue"
+          else
+            TITLE="${{ github.event.discussion.title }}"
+            URL="${{ github.event.discussion.html_url }}"
+            AUTHOR="${{ github.event.discussion.user.login }}"
+            TYPE="Discussion"
+          fi
+
+          curl -X POST "${{ secrets.SUPPORT_ISSUE_WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"blocks\": [
+                {
+                  \"type\": \"section\",
+                  \"text\": {
+                    \"type\": \"mrkdwn\",
+                    \"text\": \"🚨 *New ${TYPE} Created*\n*<${URL}|${TITLE}>*\nBy: ${AUTHOR}\"
+                  }
+                },
+                {
+                  \"type\": \"image\",
+                  \"image_url\": \"${{ steps.gif.outputs.url }}\",
+                  \"alt_text\": \"panic gif\"
+                }
+              ]
+            }"
