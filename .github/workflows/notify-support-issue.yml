@@ -47,21 +47,22 @@ jobs:
             TYPE="Discussion"
           fi
 
+          TEXT=$(printf '🚨 *New %s Created*\n*<%s|%s>*\nBy: %s' "$TYPE" "$URL" "$TITLE" "$AUTHOR")
+
+          PAYLOAD=$(jq -n --arg text "$TEXT" --arg img "$GIF_URL" '{
+            blocks: [
+              {
+                type: "section",
+                text: { type: "mrkdwn", text: $text }
+              },
+              {
+                type: "image",
+                image_url: $img,
+                alt_text: "panic gif"
+              }
+            ]
+          }')
+
           curl -X POST "$WEBHOOK_URL" \
             -H "Content-Type: application/json" \
-            -d "{
-              \"blocks\": [
-                {
-                  \"type\": \"section\",
-                  \"text\": {
-                    \"type\": \"mrkdwn\",
-                    \"text\": \"🚨 *New ${TYPE} Created*\n*<${URL}|${TITLE}>*\nBy: ${AUTHOR}\"
-                  }
-                },
-                {
-                  \"type\": \"image\",
-                  \"image_url\": \"${GIF_URL}\",
-                  \"alt_text\": \"panic gif\"
-                }
-              ]
-            }"
+            -d "$PAYLOAD"
