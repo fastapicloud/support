@@ -24,20 +24,30 @@ jobs:
           echo "url=$GIF_URL" >> $GITHUB_OUTPUT
 
       - name: Notify Slack
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+          DISCUSSION_TITLE: ${{ github.event.discussion.title }}
+          DISCUSSION_URL: ${{ github.event.discussion.html_url }}
+          DISCUSSION_AUTHOR: ${{ github.event.discussion.user.login }}
+          GIF_URL: ${{ steps.gif.outputs.url }}
+          WEBHOOK_URL: ${{ secrets.SUPPORT_ISSUE_WEBHOOK_URL }}
         run: |
-          if [ "${{ github.event_name }}" == "issues" ]; then
-            TITLE="${{ github.event.issue.title }}"
-            URL="${{ github.event.issue.html_url }}"
-            AUTHOR="${{ github.event.issue.user.login }}"
+          if [ "$EVENT_NAME" == "issues" ]; then
+            TITLE="$ISSUE_TITLE"
+            URL="$ISSUE_URL"
+            AUTHOR="$ISSUE_AUTHOR"
             TYPE="Issue"
           else
-            TITLE="${{ github.event.discussion.title }}"
-            URL="${{ github.event.discussion.html_url }}"
-            AUTHOR="${{ github.event.discussion.user.login }}"
+            TITLE="$DISCUSSION_TITLE"
+            URL="$DISCUSSION_URL"
+            AUTHOR="$DISCUSSION_AUTHOR"
             TYPE="Discussion"
           fi
 
-          curl -X POST "${{ secrets.SUPPORT_ISSUE_WEBHOOK_URL }}" \
+          curl -X POST "$WEBHOOK_URL" \
             -H "Content-Type: application/json" \
             -d "{
               \"blocks\": [
@@ -50,7 +60,7 @@ jobs:
                 },
                 {
                   \"type\": \"image\",
-                  \"image_url\": \"${{ steps.gif.outputs.url }}\",
+                  \"image_url\": \"${GIF_URL}\",
                   \"alt_text\": \"panic gif\"
                 }
               ]
