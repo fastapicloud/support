@@ -6,6 +6,8 @@ on:
   discussion:
     types: [created]
 
+permissions: {}
+
 jobs:
   notify:
     runs-on: ubuntu-latest
